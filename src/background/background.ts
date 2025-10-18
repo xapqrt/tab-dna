@@ -1,8 +1,4 @@
-
-
-
 console.log("🧬 Tab DNA background worker alive")
-
 
 
 
@@ -13,6 +9,9 @@ let currentTab: number | null = null
 let currentTabStartTime: number | null = null
 let tab_dna: any = {}
 let habit_map: any[] = []
+let switchTimestamps: number[] = []  // track switch timing for panic detection lol
+let   modeGuess = "unknown"
+
 
 
 
@@ -31,6 +30,7 @@ chrome.runtime.onInstalled.addListener(() => {
     totalSwitches: 0
   })
 })
+
 
 
 
@@ -81,6 +81,17 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
 
 
+  // track switch timestamps for speed analysis
+  switchTimestamps.push(now)
+  if(switchTimestamps.length > 20) {
+    switchTimestamps = switchTimestamps.slice(-20)  // keep last 20
+  }
+
+
+
+  // analyze switching speed (am i panicking?? lmao)
+  detectMode()
+
 
 
 
@@ -90,6 +101,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     console.log(`total switches: ${newCount}`)
   })
 })
+
 
 
 
@@ -110,6 +122,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
   }
 })
+
 
 
 
@@ -158,7 +171,9 @@ function logDwell(tabId: number, dwellMs: number) {
 
 
 
+
 // helper: log URL visit
+
 
 function logVisit(tabId: number, url: string, timestamp: number) {
   
@@ -175,6 +190,9 @@ function logVisit(tabId: number, url: string, timestamp: number) {
 
 
 
+
+  
+
   
   console.log(`DNA: visited ${domain} 🌐`)
   
@@ -187,6 +205,69 @@ function logVisit(tabId: number, url: string, timestamp: number) {
   
   chrome.storage.local.set({ tab_dna })
 }
+
+
+
+
+
+
+
+
+
+function detectMode() {
+  if (switchTimestamps.length < 3) {
+    return  
+  }
+
+
+
+  // calc avg time between switches
+
+
+
+
+  let totalGap = 0
+  for(let i=1; i < switchTimestamps.length; i++) {
+    totalGap += switchTimestamps[i] - switchTimestamps[i-1]
+  }
+  const avgGapMs = totalGap / (switchTimestamps.length - 1)
+  const  avgGapSec = avgGapMs / 1000
+
+
+
+
+  // mode detection logic 
+
+
+
+
+  let newMode = "CHILL"
+  
+  if(avgGapSec < 3) {
+    newMode = "PANIC"    
+  } else if (avgGapSec > 30) {
+    newMode = "FOCUS"    
+  }
+
+
+
+  // only update if changed
+  if(newMode !== modeGuess) {
+    modeGuess = newMode
+    chrome.storage.local.set({ modeGuess: newMode })
+    console.log(`🧬 MODE SHIFT: ${newMode} (avg switch: ${avgGapSec.toFixed(1)}s)`)
+  }
+}
+
+
+
+
+// helper: get current mode (for popup to read)
+function getCurrentMode(): string {
+  return modeGuess
+}
+
+
 
 
 

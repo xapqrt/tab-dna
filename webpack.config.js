@@ -5,7 +5,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: {
     popup: './src/popup/index.tsx',
-    background: './src/background/background.ts'
+    background: './src/background/background.ts',
+    scrollMonitor: './src/content/scrollMonitor.ts'
   },
   
   output: {

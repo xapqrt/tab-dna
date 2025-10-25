@@ -3,25 +3,95 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import DNAViz from './DNAViz'
+import HabitDisplay from './HabitDisplay'
 
 
 interface DNAState {
   modeGuess?: string
   tab_dna?: any
   habit_map?: any[]
+  visit_patterns?: any[]
 }
 
 
 function App() {
   const [dna, setDNA] = useState<DNAState>({})
+  const [habits, setHabits] = useState<any[]>([])
 
   useEffect(() => {
     // load DNA from storage
-    chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess'], (data) => {
+    chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns'], (data) => {
       console.log("loaded DNA:", data)
       setDNA(data)
+      
+
+
+      // compute habits from visit patterns
+      if (data.visit_patterns && data.visit_patterns.length > 0) {
+        const detectedHabits = computeHabits(data.visit_patterns)
+        setHabits(detectedHabits)
+      }
     })
   }, [])
+
+
+
+  // mini habit detector in popup — should match backend logic
+  function computeHabits(patterns: any[]): any[] {
+    if (patterns.length < 10) return []
+
+
+    const domainGroups: Record<string, any[]> = {}
+    
+
+
+    for (const p of patterns) {
+      if (!domainGroups[p.domain]) {
+        domainGroups[p.domain] = []
+      }
+      domainGroups[p.domain].push(p)
+    }
+
+
+
+
+    const habits: any[] = []
+
+
+    for (const [domain, pats] of Object.entries(domainGroups)) {
+      const timeSlots = { morning: 0, afternoon: 0, evening: 0, night: 0 }
+      
+
+
+      for (const p of pats) {
+        if (p.hour >= 6 && p.hour < 12) timeSlots.morning++
+        else if (p.hour >= 12 && p.hour < 18) timeSlots.afternoon++
+        else if (p.hour >= 18 && p.hour < 22) timeSlots.evening++
+        else timeSlots.night++
+      }
+
+
+
+
+      for (const [timeOfDay, count] of Object.entries(timeSlots)) {
+        if (count >= 3) {
+          const confidence = Math.min(100, Math.round((count / pats.length) * 100))
+          habits.push({
+            domain,
+            timeOfDay,
+            confidence,
+            lastSeen: Math.max(...pats.map((p: any) => p.timestamp))
+          })
+        }
+      }
+    }
+
+
+
+
+    habits.sort((a, b) => b.confidence - a.confidence)
+    return habits
+  }
 
 
   return (
@@ -33,6 +103,8 @@ function App() {
 
       <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
 
+      <HabitDisplay habits={habits} />
+
       <footer>
         <small>local only • privacy-first • slightly creepy</small>
       </footer>
@@ -43,12 +115,6 @@ function App() {
 export default App
 
 
-/*
-  COMMIT: integrated DNA viz component into popup
-  - replaced placeholder with actual DNAViz component
-  - passing tab_dna and modeGuess as props
-  - ready to see some color-coded browsing personality
-*/
 
 
 

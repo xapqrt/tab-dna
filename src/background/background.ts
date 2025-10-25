@@ -3,6 +3,7 @@
 import { DwellTracker } from './dwellTracker'
 import { ModeDetector } from './modeDetector'
 import { ScrollTracker } from './scrollTracker'
+import { HabitDetector } from './habitDetector'
 import { DNAStorage } from './storage'
 
 
@@ -16,6 +17,7 @@ console.log("🧬 Tab DNA background worker alive")
 const dwellTracker = new DwellTracker()
 const modeDetector = new ModeDetector()
 const scrollTracker = new ScrollTracker()
+const habitDetector = new HabitDetector()
 
 
 
@@ -41,6 +43,7 @@ chrome.runtime.onStartup.addListener(async () => {
   const data = await DNAStorage.load()
   dwellTracker.load(data)
   await scrollTracker.load()
+  await habitDetector.load()
   
 
 
@@ -53,6 +56,7 @@ chrome.runtime.onStartup.addListener(async () => {
 DNAStorage.load().then(data => {
   dwellTracker.load(data)
   scrollTracker.load()
+  habitDetector.load()
 })
 
 
@@ -124,9 +128,27 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     if (tab.url) {
       dwellTracker.recordVisit(tabId, tab.url, now)
+      
+
+
+      // track habit pattern too
+      const domain = extractDomain(tab.url)
+      habitDetector.recordVisitPattern(domain, now)
     }
   }
 })
+
+
+
+               
+// helper to get domain from url
+function extractDomain(url: string): string {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
+}
 
 
 

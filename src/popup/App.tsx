@@ -5,6 +5,7 @@ import './App.css'
 import DNAViz from './DNAViz'
 import HabitDisplay from './HabitDisplay'
 import StatsPanel from './StatsPanel'
+import TabSuggestions from './TabSuggestions'
 
 
 interface DNAState {
@@ -109,6 +110,12 @@ function App() {
         tab_dna={dna.tab_dna} 
         habit_map={dna.habit_map}
         totalSwitches={dna.totalSwitches}
+      />
+
+      <TabSuggestions 
+        modeGuess={dna.modeGuess}
+        habits={habits}
+        tab_dna={dna.tab_dna}
       />
 
       <HabitDisplay habits={habits} />

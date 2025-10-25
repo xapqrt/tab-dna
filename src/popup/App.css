@@ -63,3 +63,172 @@ footer small {
   font-size: 10px;
   color: #00ff4188;
 }
+
+
+
+/* DNA VIZ STYLES */
+.dna-viz {
+  position: relative;
+  padding: 16px;
+  background: #0f0f0f;
+  border: 1px solid #00ff4133;
+  border-radius: 6px;
+  min-height: 200px;
+}
+
+
+.dna-viz.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.dna-viz.empty p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #00ff4155;
+}
+
+
+
+.dna-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+
+.mode-badge {
+  padding: 4px 12px;
+  border: 1px solid;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pulse 2s infinite;
+}
+
+
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+
+
+
+.dna-strands {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+
+.dna-strand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+
+.strand-bar {
+  height: 20px;
+  border-radius: 4px;
+  animation: slideIn 0.5s ease-out;
+  box-shadow: 0 0 8px currentColor;
+  transition: all 0.3s ease;
+}
+
+.strand-bar:hover {
+  transform: scaleX(1.02);
+  filter: brightness(1.2);
+}
+
+
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+
+.strand-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+
+.domain-name {
+  color: #00ff4199;
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visit-count {
+  color: #ff00ff88;
+  font-weight: bold;
+}
+
+
+
+
+/* helix decoration — purely aesthetic */
+.helix-decoration {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 0;
+  width: 40px;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.helix-strand {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #00ff41,
+    #ff00ff,
+    transparent
+  );
+  animation: twist 4s infinite;
+}
+
+.helix-strand:nth-child(2) {
+  left: 20px;
+  animation-delay: 2s;
+}
+
+
+
+@keyframes twist {
+  0%, 100% {
+    transform: translateX(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(10px) scaleY(0.8);
+  }
+}
+

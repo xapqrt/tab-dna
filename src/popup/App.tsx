@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import './App.css'
+import DNAViz from './DNAViz'
 
 
 interface DNAState {
@@ -30,16 +31,7 @@ function App() {
         <p className="tagline">your browser knows you now</p>
       </header>
 
-      <div className="dna-display">
-        <p>Mode: <span className="highlight">{dna.modeGuess || "unknown"}</span></p>
-        
-        {/* TODO: actual DNA viz here */}
-        <div className="placeholder">
-          <p>// DNA strands go here</p>
-          <p>// color bars, personality graph, switching speed</p>
-          <p>// idk make it look cool</p>
-        </div>
-      </div>
+      <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
 
       <footer>
         <small>local only • privacy-first • slightly creepy</small>
@@ -49,6 +41,17 @@ function App() {
 }
 
 export default App
+
+
+/*
+  COMMIT: integrated DNA viz component into popup
+  - replaced placeholder with actual DNAViz component
+  - passing tab_dna and modeGuess as props
+  - ready to see some color-coded browsing personality
+*/
+
+
+
 
 
 

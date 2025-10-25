@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import DNAViz from './DNAViz'
 import HabitDisplay from './HabitDisplay'
+import StatsPanel from './StatsPanel'
 
 
 interface DNAState {
@@ -11,6 +12,7 @@ interface DNAState {
   tab_dna?: any
   habit_map?: any[]
   visit_patterns?: any[]
+  totalSwitches?: number
 }
 
 
@@ -20,7 +22,7 @@ function App() {
 
   useEffect(() => {
     // load DNA from storage
-    chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns'], (data) => {
+    chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns', 'totalSwitches'], (data) => {
       console.log("loaded DNA:", data)
       setDNA(data)
       
@@ -102,6 +104,12 @@ function App() {
       </header>
 
       <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
+
+      <StatsPanel 
+        tab_dna={dna.tab_dna} 
+        habit_map={dna.habit_map}
+        totalSwitches={dna.totalSwitches}
+      />
 
       <HabitDisplay habits={habits} />
 

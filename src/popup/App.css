@@ -340,3 +340,122 @@ footer small {
   box-shadow: 0 0 6px currentColor;
 }
 
+
+
+
+/* STATS PANEL STYLES */
+.stats-panel {
+  margin-top: 20px;
+  padding: 16px;
+  background: #0a0a0a;
+  border: 1px solid #00d4ff44;
+  border-radius: 6px;
+}
+
+
+
+.stats-header {
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #00d4ff33;
+}
+
+
+.stats-header .label {
+  font-size: 13px;
+  color: #00d4ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+
+
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: #111;
+  border: 1px solid #00d4ff22;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+
+.stat-item:hover {
+  border-color: #00d4ff66;
+  transform: translateY(-2px);
+}
+
+
+
+.stat-item.highlight {
+  grid-column: 1 / -1;
+  background: #0f0f0f;
+  border-color: #00d4ff44;
+}
+
+
+
+
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00d4ff;
+  font-family: 'Courier New', monospace;
+}
+
+
+.stat-item.highlight .stat-value {
+  font-size: 16px;
+  color: #00ff41;
+}
+
+
+
+
+.stat-label {
+  font-size: 10px;
+  color: #00d4ff88;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+
+
+.extra-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #0f0f0f;
+  border: 1px dashed #00d4ff22;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+
+
+.extra-label {
+  color: #00d4ff88;
+}
+
+
+.extra-value {
+  color: #00d4ff;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+

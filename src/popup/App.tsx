@@ -1,8 +1,4 @@
-/* 
-  POPUP UI
-  shows the user their browsing DNA — colors, mood, habits, weird personality metrics
-  rn it's just a placeholder shell
-*/
+
 
 import React, { useEffect, useState } from 'react'
 import './App.css'
@@ -55,10 +51,4 @@ function App() {
 export default App
 
 
-/*
-  COMMIT: scaffold popup UI
-  - basic React app shell
-  - reads from chrome.storage
-  - placeholder for DNA visualization
-  - late-night-hacker aesthetic started
-*/
+

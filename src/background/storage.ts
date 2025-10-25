@@ -1,4 +1,4 @@
-
+/// <reference types="chrome"/>
 
 import { StorageSchema, TabDNA, DwellEvent } from './types'
 

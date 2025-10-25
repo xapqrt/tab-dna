@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 
 
 import { DwellTracker } from './dwellTracker'

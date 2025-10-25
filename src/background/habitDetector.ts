@@ -2,6 +2,8 @@
 
 
 
+/// <reference types="chrome"/>
+
 
 
 //lets go
@@ -16,7 +18,7 @@ import { TabDNA } from "./types";
 
 
 
-interface VIsitPattern {
+interface VisitPattern {
 
 
     domain: string
@@ -44,7 +46,7 @@ interface HabitSignal {
 
     lastSeen: number
 
-
+}
 
 
 
@@ -86,7 +88,7 @@ console.log(` loaded ${this.visitPatterns.length} visit patterns`)
 
     const date = new Date(timestamp)
     const hour = date.getHours()
-    const dayOfWeek = DelayNode.getDay()
+    const dayOfWeek = date.getDay()
 
     //setting 0 as sunday and 6 as saturday
 
@@ -150,14 +152,13 @@ detectHabits(): HabitSignal[] {
     }
 
 
-    const domainGroupd = this.groupByDomain()
+    const domainGroups = this.groupByDomain()
     const habits: HabitSignal[]= []
 
 
     for (const [domain, patterns] of Object.entries(domainGroups)) {
 
-    const timeSlots = this.analyseTimeSlots
-    (patterns)
+    const timeSlots = this.analyzeTimeSlots(patterns)
 
 
 
@@ -197,7 +198,7 @@ return habits
 
 
 
-private groupByDomain(): Record<string, VIsitPattern[]> {
+private groupByDomain(): Record<string, VisitPattern[]> {
 
     const groups: Record<string, VisitPattern[]> = {}
 

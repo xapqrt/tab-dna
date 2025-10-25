@@ -1,4 +1,5 @@
 
+/// <reference types="chrome"/>
 
 
 import { DNAStorage } from './storage'

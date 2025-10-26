@@ -119,7 +119,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 
 
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tabId === currentTab) {
     const now = Date.now()
 
@@ -128,12 +128,20 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 
     if (tab.url) {
+      const domain = extractDomain(tab.url)
+      
+      // check blacklist before tracking
+      const isBlacklisted = await checkBlacklist(domain)
+      if (isBlacklisted) {
+        console.log(`🔒 domain ${domain} is blacklisted, skipping tracking`)
+        return
+      }
+
       dwellTracker.recordVisit(tabId, tab.url, now)
       
 
 
       // track habit pattern too
-      const domain = extractDomain(tab.url)
       habitDetector.recordVisitPattern(domain, now)
     }
   }
@@ -149,6 +157,26 @@ function extractDomain(url: string): string {
   } catch {
     return url
   }
+}
+
+
+// check if domain is blacklisted
+async function checkBlacklist(domain: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['domain_blacklist'], (data) => {
+      const blacklist = data.domain_blacklist || []
+      
+      // normalize domain for comparison
+      const normalized = domain.replace(/^www\./, '').toLowerCase()
+      
+      const isBlacklisted = blacklist.some((d: string) => {
+        const normalizedBlacklist = d.replace(/^www\./, '').toLowerCase()
+        return normalized === normalizedBlacklist || normalized.endsWith('.' + normalizedBlacklist)
+      })
+      
+      resolve(isBlacklisted)
+    })
+  })
 }
 
 

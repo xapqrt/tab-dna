@@ -44,7 +44,7 @@ function HabitDisplay({habits}: HabitDisplayProps) {
         //get current time slot todetermine and display
 
 
-        const hour = new Data().getHours()
+        const hour = new Date().getHours()
 
         let timeSlot: 'morning' | 'afternoon' | 'evening' | 'night'
 
@@ -66,7 +66,7 @@ function HabitDisplay({habits}: HabitDisplayProps) {
 
     //fliter habits for time we determined here ^^^^
 
-    const filtered = habits.filter(h => h.timeOfDay === timeSLot)
+    const filtered = habits.filter(h => h.timeOfDay === timeSlot)
     setCurrentTimeHabits(filtered.slice(0, 5))
     }, [habits])
 
@@ -91,7 +91,6 @@ function HabitDisplay({habits}: HabitDisplayProps) {
     function getConfidenceColor(confidence: number): string {
 
         if(confidence > 70 ) return '#00ff41'
-        confidence = green
         if(confidence > 40 ) return '#00d4ff'
         return '#ff00ff66'
 

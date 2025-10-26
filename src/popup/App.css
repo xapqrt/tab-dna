@@ -596,3 +596,223 @@ footer small {
   color: #ffaa0066;
 }
 
+
+
+
+/* BLACKLIST MANAGER STYLES */
+.blacklist-manager {
+  margin-top: 20px;
+  padding: 16px;
+  background: #0a0a0a;
+  border: 1px solid #ff006644;
+  border-radius: 6px;
+}
+
+
+
+.blacklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ff006633;
+}
+
+
+
+.blacklist-header .label {
+  font-size: 13px;
+  color: #ff0066;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+
+.blacklist-header .add-btn {
+  background: #111;
+  border: 1px solid #ff006644;
+  color: #ff0066;
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+
+.blacklist-header .add-btn:hover {
+  background: #ff006622;
+  border-color: #ff0066;
+  transform: rotate(90deg);
+}
+
+
+
+
+.add-domain-input {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  animation: slideDown 0.3s ease;
+}
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+.add-domain-input input {
+  flex: 1;
+  background: #111;
+  border: 1px solid #ff006644;
+  color: #00ff41;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+
+.add-domain-input input:focus {
+  outline: none;
+  border-color: #ff0066;
+  box-shadow: 0 0 8px #ff006633;
+}
+
+
+.add-domain-input input::placeholder {
+  color: #ff006666;
+}
+
+
+
+.add-domain-input button {
+  background: #ff006622;
+  border: 1px solid #ff0066;
+  color: #ff0066;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+
+.add-domain-input button:hover {
+  background: #ff0066;
+  color: #0a0a0a;
+}
+
+
+
+
+.empty-state {
+  text-align: center;
+  padding: 24px;
+}
+
+
+.empty-state .hint {
+  margin: 6px 0;
+  font-size: 12px;
+  color: #ff006666;
+  font-style: italic;
+}
+
+
+
+
+.blacklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+
+.blacklist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #111;
+  border: 1px solid #ff006622;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+
+.blacklist-item:hover {
+  border-color: #ff006666;
+  background: #1a0a0a;
+}
+
+
+
+
+.blacklist-item .domain-text {
+  font-size: 12px;
+  color: #00ff4199;
+  font-family: 'Courier New', monospace;
+  flex: 1;
+}
+
+
+
+.blacklist-item .remove-btn {
+  background: transparent;
+  border: 1px solid #ff006644;
+  color: #ff0066;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+
+.blacklist-item .remove-btn:hover {
+  background: #ff0066;
+  color: #0a0a0a;
+  transform: rotate(90deg);
+}
+
+
+
+
+.blacklist-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed #ff006622;
+  text-align: center;
+}
+
+
+.blacklist-footer small {
+  font-size: 10px;
+  color: #ff006666;
+}

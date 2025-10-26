@@ -6,6 +6,7 @@ import DNAViz from './DNAViz'
 import HabitDisplay from './HabitDisplay'
 import StatsPanel from './StatsPanel'
 import TabSuggestions from './TabSuggestions'
+import BlacklistManager from './BlacklistManager'
 
 
 interface DNAState {
@@ -119,6 +120,16 @@ function App() {
       />
 
       <HabitDisplay habits={habits} />
+
+      <BlacklistManager onUpdate={() => {
+        // reload data when blacklist changes
+        chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns', 'totalSwitches'], (data) => {
+          setDNA(data)
+          if (data.visit_patterns) {
+            setHabits(computeHabits(data.visit_patterns))
+          }
+        })
+      }} />
 
       <footer>
         <small>local only • privacy-first • slightly creepy</small>

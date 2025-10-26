@@ -816,3 +816,147 @@ footer small {
   font-size: 10px;
   color: #ff006666;
 }
+
+
+
+
+/* DNA EXPORTER STYLES */
+.dna-exporter {
+  margin-top: 20px;
+  padding: 16px;
+  background: #0a0a0a;
+  border: 1px solid #9d4edd44;
+  border-radius: 6px;
+}
+
+
+
+.exporter-header {
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #9d4edd33;
+}
+
+
+.exporter-header .label {
+  font-size: 13px;
+  color: #9d4edd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+
+
+
+.exporter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+
+
+.exporter-actions button {
+  padding: 12px 16px;
+  background: #111;
+  border: 1px solid #9d4edd44;
+  border-radius: 4px;
+  color: #9d4edd;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+
+.exporter-actions button:hover {
+  background: #9d4edd22;
+  border-color: #9d4edd;
+  transform: translateX(4px);
+}
+
+
+.exporter-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+
+
+.export-btn {
+  border-color: #00ff4144 !important;
+  color: #00ff41 !important;
+}
+
+
+.export-btn:hover {
+  background: #00ff4122 !important;
+  border-color: #00ff41 !important;
+}
+
+
+
+
+.size-btn {
+  border-color: #00d4ff44 !important;
+  color: #00d4ff !important;
+}
+
+
+.size-btn:hover {
+  background: #00d4ff22 !important;
+  border-color: #00d4ff !important;
+}
+
+
+
+
+.clear-btn {
+  border-color: #ff006644 !important;
+  color: #ff0066 !important;
+}
+
+
+.clear-btn:hover {
+  background: #ff006622 !important;
+  border-color: #ff0066 !important;
+}
+
+
+
+
+.last-export {
+  padding: 8px 12px;
+  background: #0f0f0f;
+  border: 1px dashed #9d4edd22;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+
+.last-export small {
+  font-size: 10px;
+  color: #9d4edd88;
+  font-style: italic;
+}
+
+
+
+
+.exporter-footer {
+  padding-top: 8px;
+  border-top: 1px dashed #9d4edd22;
+  text-align: center;
+}
+
+
+.exporter-footer small {
+  font-size: 10px;
+  color: #9d4edd66;
+}

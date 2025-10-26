@@ -7,6 +7,7 @@ import HabitDisplay from './HabitDisplay'
 import StatsPanel from './StatsPanel'
 import TabSuggestions from './TabSuggestions'
 import BlacklistManager from './BlacklistManager'
+import DNAExporter from './DNAExporter'
 
 
 interface DNAState {
@@ -130,6 +131,8 @@ function App() {
           }
         })
       }} />
+
+      <DNAExporter />
 
       <footer>
         <small>local only • privacy-first • slightly creepy</small>

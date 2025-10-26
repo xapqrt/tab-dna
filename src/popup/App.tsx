@@ -8,6 +8,7 @@ import StatsPanel from './StatsPanel'
 import TabSuggestions from './TabSuggestions'
 import BlacklistManager from './BlacklistManager'
 import DNAExporter from './DNAExporter'
+import DNATimeline from './DNATimeline'
 
 
 interface DNAState {
@@ -107,6 +108,12 @@ function App() {
       </header>
 
       <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
+
+      <DNATimeline 
+        habit_map={dna.habit_map}
+        visit_patterns={dna.visit_patterns}
+        totalSwitches={dna.totalSwitches}
+      />
 
       <StatsPanel 
         tab_dna={dna.tab_dna} 

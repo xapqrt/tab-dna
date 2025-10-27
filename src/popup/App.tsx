@@ -9,6 +9,7 @@ import TabSuggestions from './TabSuggestions'
 import BlacklistManager from './BlacklistManager'
 import DNAExporter from './DNAExporter'
 import DNATimeline from './DNATimeline'
+import TabPredictions from './TabPredictions'
 
 
 interface DNAState {
@@ -108,6 +109,13 @@ function App() {
       </header>
 
       <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
+
+      <TabPredictions 
+        habits={habits}
+        tab_dna={dna.tab_dna}
+        modeGuess={dna.modeGuess}
+        visit_patterns={dna.visit_patterns}
+      />
 
       <DNATimeline 
         habit_map={dna.habit_map}

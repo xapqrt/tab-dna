@@ -3,11 +3,8 @@
 import { StorageSchema, TabDNA, DwellEvent } from './types'
 
 
-
-
 export class DNAStorage {
   
-
 
   static async init(): Promise<void> {
     await chrome.storage.local.set({ 
@@ -18,8 +15,6 @@ export class DNAStorage {
       lastActiveTime: Date.now()
     })
   }
-
-
 
 
   static async load(): Promise<Partial<StorageSchema>> {
@@ -34,13 +29,9 @@ export class DNAStorage {
 
 
 
-
-
   static async saveTabDNA(tab_dna: TabDNA): Promise<void> {
     await chrome.storage.local.set({ tab_dna })
   }
-
-
 
 
 
@@ -48,10 +39,7 @@ export class DNAStorage {
     await chrome.storage.local.set({ habit_map })
   }
 
-
-
   
-
 
 
   static async saveMode(modeGuess: string): Promise<void> {
@@ -60,19 +48,15 @@ export class DNAStorage {
 
 
 
-
-
   static async incrementSwitches(): Promise<number> {
     return new Promise((resolve) => {
       chrome.storage.local.get(['totalSwitches'], (data) => {
-        const newCount = (data.totalSwitches || 0) + 1
-        chrome.storage.local.set({ totalSwitches: newCount })
-        resolve(newCount)
+        const new_count = (data.totalSwitches || 0) + 1
+        chrome.storage.local.set({ totalSwitches: new_count })
+        resolve(new_count)
       })
     })
   }
-
-
 
 
 

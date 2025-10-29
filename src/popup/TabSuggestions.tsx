@@ -6,15 +6,12 @@
 import React, {useEffect, useState } from 'react'
 
 
-
 interface Suggestion {
     domain: string
     reason: string
     confidence: number 
     url?: string
 }
-
-
 
 
 
@@ -29,6 +26,10 @@ interface TabSUggestionsprops {
 
 
 
+
+
+
+
 function TabSuggestions({ modeGuess, habits, tab_dna }:TabSUggestionsprops) {
 
 
@@ -37,9 +38,7 @@ function TabSuggestions({ modeGuess, habits, tab_dna }:TabSUggestionsprops) {
 
 
 
-
     useEffect(() => {
-
 
         if(!modeGuess && !habits) return
 
@@ -54,155 +53,95 @@ function TabSuggestions({ modeGuess, habits, tab_dna }:TabSUggestionsprops) {
 
 
 
-
-
     function generateSuggestions(): Suggestion[] {
-
 
         const suggs: Suggestion[] = []
 
-
         //suggesting on time
 
-
         if(habits && habits.length > 0) {
-            const topHabits = habits.slice(0, 3)
+            const top_habits = habits.slice(0, 3)
             //for current time
 
-
-
-
-
-
-            for (const habit of topHabits){
-
+            for (const habit of top_habits){
                 if(habit.confidence > 50){
-
                     suggs.push({
                         domain: habit.domain,
                         reason: `u usually visit this around the time`,
                         confidence: habit.confidence,
                         url: `https://${habit.domain}`  //i lwkey hopep this is right
-
-
                     })
                 }
             }
         }
 
-
-
-
         //mode based suggestion code below
-
-
-
         if(modeGuess) {
-            const modeSuggs = getModeBasedSuggestions(modeGuess)
-            suggs.push(...modeSuggs)
-
+            const mode_suggs = getModeBasedSuggestions(modeGuess)
+            suggs.push(...mode_suggs)
         }
-
 
         //sort by confidence
         suggs.sort((a,b) => b.confidence - a.confidence)
-
 
         return suggs.slice(0,5)
     }
 
 
 
-
-
     function getModeBasedSuggestions(mode: string): Suggestion [] {
         const suggs: Suggestion[] = []
-
 
         switch(mode) {
 
             case 'FOCUS' :
-                        if(tab_dna) {
-                            const productiveDomains = ['github.com', 'stackoverflow.com', 'docs.google.com', 'notion.so']
+                if(tab_dna) {
+                    const productive_domains = ['github.com', 'stackoverflow.com', 'docs.google.com', 'notion.so']
 
-
-
-
-                            for(const domain of productiveDomains) {
-                                if(tab_dna[domain]) {
-
-                                    suggs.push({
-                                        domain,
-                                        reason: 'FOCUS mode',
-                                        confidence: 70,
-                                        url: `https://${domain}`
-                                    })
-                                }
-                            }
-                        }
-
-                        break
-
-
-
-
-
-
-
-                        case `PANIC`:
-
-                        //suggesting um maybe calm sites?
-
+                    for(const domain of productive_domains) {
                         suggs.push({
-                            domain: 'youtube.com',
-                            reason: 'dude ur doing too much, maybe calm down',
-                            confidence: 60,
-                            url: 'https://youtube.com'
+                            domain,
+                            reason: 'FOCUS mode',
+                            confidence: 70,
+                            url: `https://${domain}`
                         })
-                        break
+                    }
+                }
+                break
 
 
+            case `PANIC`:
+                //suggesting um maybe calm sites?
+                suggs.push({
+                    domain: 'youtube.com',
+                    reason: 'dude ur doing too much, maybe calm down',
+                    confidence: 60,
+                    url: 'https://youtube.com'
+                })
+                break
 
 
+            case 'CHILL':
+                //chill webs
+                if(tab_dna) {
+                    const chill_domains = ['reddit.com', 'youtube.com', 'twitter.com', 'netflix.com']
 
-
-
-
-
-                        case 'CHILL':
-                            //chill webs
-
-                            if(tab_dna) {
-                                const chillDomains = ['reddit.com', 'youtube.com', 'twitter.com', 'netflix.com']
-
-
-
-
-
-
-                                for (const domain of chillDomains) {
-                                    if(tab_dna[domain]) {
-                                        suggs.push({
-
-                                            domain,
-                                            reason: 'chill vibes detected',
-                                            confidence: 65,
-                                            url: `https://${domain}`
-
-                                        })
-                                    }
-                                }
-        
-        
-                            }
-                            break
-
-
+                    for (const domain of chill_domains) {
+                        suggs.push({
+                            domain,
+                            reason: 'chill vibes detected',
+                            confidence: 65,
+                            url: `https://${domain}`
+                        })
+                    }
+                }
+                break
 
         }
         return suggs
 
     }
+
 
     function handleOpenTab(url: string): void {
 
@@ -214,34 +153,27 @@ function TabSuggestions({ modeGuess, habits, tab_dna }:TabSUggestionsprops) {
 
 
 
-
-
     function getConfidenceColor(confidence: number): string {
-
-        if (confidence >70) return '#00ff41'
-        if(confidence > 50) return '#00d4ff'
-        return '#ff00ff88'
+        if (confidence > 70) return '#00ff41'
+        if (confidence > 50) return '#00d4ff'
+        return '#ff0066'
     }
 
+    if (!suggestions || suggestions.length === 0) {
+        return (
+            <div className="tab-suggestions empty">
+                <p className="hint">// no suggestions right now</p>
+                <p className="hint">// browse more to build ur profile 👀</p>
+            </div>
+        )
+    }
 
-     if (!suggestions || suggestions.length === 0) {
     return (
-      <div className="tab-suggestions empty">
-        <p className="hint">// no suggestions right now</p>
-        <p className="hint">// browse more to build ur profile 👀</p>
-      </div>
-    )
-  }
-
-
-
- return (
     <div className="tab-suggestions">
       <div className="suggestions-header">
         <span className="label">💡 suggestions</span>
         <span className="mode-hint">{modeGuess || 'unknown'} mode</span>
       </div>
-
 
 
 
@@ -268,15 +200,12 @@ function TabSuggestions({ modeGuess, habits, tab_dna }:TabSUggestionsprops) {
 
 
 
-
       <div className="suggestions-footer">
         <small>click to open • suggestions based on ur habits</small>
       </div>
     </div>
   )
 }
-
-
 
 
 

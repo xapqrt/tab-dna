@@ -1,39 +1,30 @@
 
 
-
 import { BrowsingMode } from './types'
 import { DNAStorage } from './storage'
 
 
-
-
 export class ModeDetector {
-  private switchTimestamps: number[] = []
-  private currentMode: BrowsingMode = 'unknown'
+  private switch_timestamps: number[] = []
+  private current_mode: BrowsingMode = 'unknown'
   
-
 
   private readonly PANIC_THRESHOLD = 3
   private readonly FOCUS_THRESHOLD = 30
   private readonly MAX_HISTORY = 20
 
-
-
   
-
 
 
 
   recordSwitch(): void {
     const now = Date.now()
-    this.switchTimestamps.push(now)
+    this.switch_timestamps.push(now)
     
 
-
-    if (this.switchTimestamps.length > this.MAX_HISTORY) {
-      this.switchTimestamps = this.switchTimestamps.slice(-this.MAX_HISTORY)
+    if (this.switch_timestamps.length > this.MAX_HISTORY) {
+      this.switch_timestamps = this.switch_timestamps.slice(-this.MAX_HISTORY)
     }
-
 
 
     this.analyze()
@@ -42,59 +33,46 @@ export class ModeDetector {
 
 
 
-
-
   private analyze(): void {
-    if (this.switchTimestamps.length < 3) {
+    if (this.switch_timestamps.length < 3) {
       return
     }
 
 
-
     
 
 
-
-    const avgGapSec = this.calculateAverageSwitchGap()
-    const newMode = this.determineMode(avgGapSec)
-
+    const avg_gap_sec = this.calculateAverageSwitchGap()
+    const new_mode = this.determineMode(avg_gap_sec)
 
 
 
-
-    if (newMode !== this.currentMode) {
-      this.currentMode = newMode
-      DNAStorage.saveMode(newMode)
-      console.log(`🧬 MODE SHIFT: ${newMode} (avg: ${avgGapSec.toFixed(1)}s)`)
+    if (new_mode !== this.current_mode) {
+      this.current_mode = new_mode
+      DNAStorage.saveMode(new_mode)
+      console.log(`🧬 MODE SHIFT: ${new_mode} (avg: ${avg_gap_sec.toFixed(1)}s)`)
     }
   }
 
 
 
 
-
-
   
-
 
 
 
   private calculateAverageSwitchGap(): number {
-    let totalGap = 0
+    let total_gap = 0
     
 
-
-    for (let i = 1; i < this.switchTimestamps.length; i++) {
-      totalGap += this.switchTimestamps[i] - this.switchTimestamps[i - 1]
+    for (let i = 1; i < this.switch_timestamps.length; i++) {
+      total_gap += this.switch_timestamps[i] - this.switch_timestamps[i - 1]
     }
     
 
-
-    const avgGapMs = totalGap / (this.switchTimestamps.length - 1)
-    return avgGapMs / 1000
+    const avg_gap_ms = total_gap / (this.switch_timestamps.length - 1)
+    return avg_gap_ms / 1000
   }
-
-
 
 
 
@@ -103,19 +81,15 @@ export class ModeDetector {
 
 
 
-
-  private determineMode(avgGapSec: number): BrowsingMode {
-    if (avgGapSec < this.PANIC_THRESHOLD) {
+  private determineMode(avg_gap_sec: number): BrowsingMode {
+    if (avg_gap_sec < this.PANIC_THRESHOLD) {
       return 'PANIC'
     }
     
 
-
-    if (avgGapSec > this.FOCUS_THRESHOLD) {
+    if (avg_gap_sec > this.FOCUS_THRESHOLD) {
       return 'FOCUS'
     }
-
-
 
 
 
@@ -125,10 +99,7 @@ export class ModeDetector {
 
 
 
-
-
   getMode(): BrowsingMode {
-    return this.currentMode
+    return this.current_mode
   }
 }
-

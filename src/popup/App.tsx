@@ -10,6 +10,9 @@ import BlacklistManager from './BlacklistManager'
 import DNAExporter from './DNAExporter'
 import DNATimeline from './DNATimeline'
 import TabPredictions from './TabPredictions'
+import SiteStreaks from './SiteStreaks'
+import TabSpirit from './TabSpirit'
+import VectorExporter from './VectorExporter'
 
 
 interface DNAState {
@@ -24,21 +27,37 @@ interface DNAState {
 function App() {
   const [dna, setDNA] = useState<DNAState>({})
   const [habits, setHabits] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     // load DNA from storage
-    chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns', 'totalSwitches'], (data) => {
-      console.log("loaded DNA:", data)
-      setDNA(data)
-      
+    try {
+      chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns', 'totalSwitches'], (data) => {
+        console.log("loaded DNA:", data)
+        
+        if (chrome.runtime.lastError) {
+          console.error('Storage error:', chrome.runtime.lastError)
+          setError('Failed to load data')
+          setLoading(false)
+          return
+        }
 
-
-      // compute habits from visit patterns
-      if (data.visit_patterns && data.visit_patterns.length > 0) {
-        const detectedHabits = computeHabits(data.visit_patterns)
-        setHabits(detectedHabits)
-      }
-    })
+        setDNA(data || {})
+        
+        // compute habits from visit patterns
+        if (data.visit_patterns && data.visit_patterns.length > 0) {
+          const detectedHabits = computeHabits(data.visit_patterns)
+          setHabits(detectedHabits)
+        }
+        
+        setLoading(false)
+      })
+    } catch (err) {
+      console.error('Error loading DNA:', err)
+      setError('Failed to initialize')
+      setLoading(false)
+    }
   }, [])
 
 
@@ -103,12 +122,32 @@ function App() {
 
   return (
     <div className="app">
-      <header>
-        <h1>🧬 Tab DNA</h1>
-        <p className="tagline">your browser knows you now</p>
-      </header>
+      {loading && (
+        <div className="loading-state">
+          <p>loading your dna...</p>
+        </div>
+      )}
 
-      <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
+      {error && (
+        <div className="error-state">
+          <p>⚠️ {error}</p>
+          <button onClick={() => window.location.reload()}>retry</button>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <>
+          <header>
+            <h1>Tab DNA</h1>
+            <p className="tagline">Your browsing habits, decoded</p>
+          </header>
+
+          <TabSpirit 
+            totalSwitches={dna.totalSwitches}
+            recentActivity={dna.modeGuess}
+          />
+
+          <DNAViz tab_dna={dna.tab_dna} modeGuess={dna.modeGuess} />
 
       <TabPredictions 
         habits={habits}
@@ -137,26 +176,48 @@ function App() {
 
       <HabitDisplay habits={habits} />
 
+      <SiteStreaks 
+        visit_patterns={dna.visit_patterns}
+        tab_dna={dna.tab_dna}
+      />
+
       <BlacklistManager onUpdate={() => {
         // reload data when blacklist changes
+        setLoading(true)
         chrome.storage.local.get(['tab_dna', 'habit_map', 'modeGuess', 'visit_patterns', 'totalSwitches'], (data) => {
-          setDNA(data)
+          if (chrome.runtime.lastError) {
+            console.error('Reload error:', chrome.runtime.lastError)
+            setLoading(false)
+            return
+          }
+          setDNA(data || {})
           if (data.visit_patterns) {
             setHabits(computeHabits(data.visit_patterns))
           }
+          setLoading(false)
         })
       }} />
+
+      <VectorExporter 
+        tab_dna={dna.tab_dna}
+        habit_map={dna.habit_map}
+        totalSwitches={dna.totalSwitches}
+        modeGuess={dna.modeGuess}
+      />
 
       <DNAExporter />
 
       <footer>
         <small>local only • privacy-first • slightly creepy</small>
       </footer>
+        </>
+      )}
     </div>
   )
 }
 
 export default App
+
 
 
 

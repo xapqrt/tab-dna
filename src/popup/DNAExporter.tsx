@@ -8,7 +8,6 @@
 import React, {useState} from 'react'
 
 
-
 interface ExportData {
 
     tab_dna?: any
@@ -25,20 +24,15 @@ interface ExportData {
 
 
 
-
-
-
 function DNAExporter(){
 
 
     const [exporting, setExporting] = useState(false)
-    const [lastExport, setLastExport] = useState<string | null>(null)
-
+    const [last_export, setLastExport] = useState<string | null>(null)
 
 
     async function exportDNA(): Promise<void>{
         setExporting(true)
-
 
 
 
@@ -52,7 +46,6 @@ function DNAExporter(){
                     resolve(result)
                 })
             })
-
 
 
 
@@ -75,17 +68,11 @@ function DNAExporter(){
 
 
 
-
-
-
             //creation of json blob below
-
 
 
             const json = JSON.stringify(exportData, null, 2)
             const blob = new Blob([json], { type: 'application/json'})
-
-
 
 
 
@@ -105,11 +92,7 @@ function DNAExporter(){
 
 
 
-
-
-
             //triggering the download through the link
-
 
 
             const a = document. createElement('a')
@@ -122,11 +105,8 @@ function DNAExporter(){
 
 
 
-
             setLastExport(new Date().toLocaleString())
             console.log("huff dna exported " , filename)
-
-
 
 
 
@@ -139,7 +119,6 @@ function DNAExporter(){
     }
 
 
-
     async function clearAllData(): Promise<void>{
         if(!confirm('r u sure? this will delete all your browsing dna!!')) {
             return
@@ -147,11 +126,9 @@ function DNAExporter(){
 
 
 
-
         if(!confirm('bro i wasnt kidding tho')){
             return
         }
-
 
 
 
@@ -163,11 +140,8 @@ function DNAExporter(){
             })
 
 
-
             alert('alr twin everythings done for, starting fresh')
-            vonsole.log('dna data cleared')
-
-
+            console.log('dna data cleared')
 
 
 
@@ -178,8 +152,6 @@ function DNAExporter(){
 
 
 
-
-
         } catch(err){
             console.error('clear failed:' , err)
             alert("failed to clear data")
@@ -187,7 +159,6 @@ function DNAExporter(){
 
 
     }
-
 
 
 
@@ -208,19 +179,20 @@ function DNAExporter(){
 
 
 
-
             <div className='exporter-actions'>
                 <button
                         className='export-btn'
                         onClick={exportDNA}
                         disabled={exporting}
+                >
+          {exporting ? '⏳ exporting...' : '💾 export dna'}
+        </button>
         <button 
           className="size-btn"
           onClick={getDataSize}
         >
           📊 check size
         </button>
-
 
 
 
@@ -234,13 +206,11 @@ function DNAExporter(){
 
 
 
-
-      {lastExport && (
+      {last_export && (
         <div className="last-export">
-          <small>last export: {lastExport}</small>
+          <small>last export: {last_export}</small>
         </div>
       )}
-
 
 
 
@@ -250,7 +220,6 @@ function DNAExporter(){
     </div>
   )
 }
-
 
 
 

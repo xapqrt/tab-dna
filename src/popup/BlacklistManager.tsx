@@ -3,8 +3,6 @@
 
 
 
-
-
 /// <reference types="chrome"/>
 
 
@@ -12,28 +10,26 @@ import React, { useEffect, useState } from 'react'
 
 
 
-
 interface BlacklistManagerProps {
 
     onUpdate?: () => void
 
-
 }
+
+
+
 
 
 
 function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
     const [blacklist, setBlacklist] = useState<string[]>([])
-    const [newDomain, setNewDomain] = useState('')
-    const [showInput, setShowInput] = useState('false')
-
-
+    const [new_domain, setNewDomain] = useState('')
+    const [show_input, setShowInput] = useState(false)
 
 
 
     useEffect(() => {
-
 
         //load blacklist from chrome local storage
 
@@ -50,12 +46,9 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
 
 
-
     function addDomain(): void {
 
-        if(!newDomain.trim()) return
-
-
+        if(!new_domain.trim()) return
 
 
 
@@ -63,8 +56,7 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
     // clean up domain input
 
 
-
-    let domain = newDomain.trim().toLowerCase()
+    let domain = new_domain.trim().toLowerCase()
     domain = domain.replace(/^https?:\/\//, '') // remove protocol
     domain = domain.replace(/^www\./, '') // remove www
     domain = domain.split('/')[0] // remove path
@@ -72,10 +64,7 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
 
 
-
-
     if(blacklist.includes(domain)){
-
 
         alert("domain already in the blackclist vro")
         return
@@ -84,7 +73,6 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
     const updated = [...blacklist, domain]
     setBlacklist(updated)
-
 
 
     //save to storage
@@ -98,21 +86,15 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
 
 
-
-
-
     setNewDomain('')
     setShowInput(false)
     }
 
 
-
     function removeDomain(domain: string): void {
-
 
         const updated = blacklist.filter(d => d !== domain)
         setBlacklist(updated)
-
 
 
         chrome.storage.local.set({ domain_blacklist: updated }, () => {
@@ -121,7 +103,6 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
             if(onUpdate) onUpdate()
         })
     }
-
 
 
     function handleKeyPress(e: React.KeyboardEvent): void {
@@ -136,27 +117,23 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
 
 
-
-
     return (
 
         <div className='blacklist-manager'>
             <div className='blacklist-header'>
                 <span className='label'>privacy blacklist</span>
-                <button className='add-btn' onClick={() => setShowInput(!showInput)}>{showInput ? '✕' : '+'}</button>
+                <button className='add-btn' onClick={() => setShowInput(!show_input)}>{show_input ? '✕' : '+'}</button>
 
             </div>
 
 
 
-
-
-            {showInput && (
+            {show_input && (
                 <div className='add-domain-input'>
                     <input
                     type='text'
                     placeholder='domain.com'
-                    value = {newDomain}
+                    value = {new_domain}
                     onChange={(e) => setNewDomain(e.target.value)}
                     onKeyDown={handleKeyPress}
                     autoFocus
@@ -193,14 +170,12 @@ function BlacklistManager({ onUpdate}: BlacklistManagerProps){
 
 
 
-
       <div className="blacklist-footer">
         <small>these domains won't be tracked or stored</small>
       </div>
     </div>
   )
 }
-
 
 
 

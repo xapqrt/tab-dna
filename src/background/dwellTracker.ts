@@ -1,9 +1,6 @@
 
-
 import { DwellEvent, TabDNA } from './types'
 import { DNAStorage } from './storage'
-
-
 
 
 
@@ -11,21 +8,15 @@ export class DwellTracker {
   private habit_map: DwellEvent[] = []
   private tab_dna: TabDNA = {}
 
-
-
   
 
   
-
 
   private readonly MAX_EVENTS = 500
 
 
 
-
-
   
-
 
 
   load(existingData: { habit_map?: DwellEvent[]; tab_dna?: TabDNA }): void {
@@ -35,39 +26,29 @@ export class DwellTracker {
 
 
 
-
-
   
 
 
-
   recordDwell(tabId: number, dwellMs: number): void {
-    const dwellSec = Math.round(dwellMs / 1000)
+    const dwell_sec = Math.round(dwellMs / 1000)
     
 
-
-    console.log(`DNA: dwelled on tab ${tabId} for ${dwellSec}s ⏱️`)
-
-
+    console.log(`DNA: dwelled on tab ${tabId} for ${dwell_sec}s ⏱️`)
 
 
 
     this.habit_map.push({
       type: 'dwell',
       tabId,
-      duration: dwellSec,
+      duration: dwell_sec,
       timestamp: Date.now()
     })
 
-
     
-
 
     if (this.habit_map.length > this.MAX_EVENTS) {
       this.habit_map = this.habit_map.slice(-this.MAX_EVENTS)
     }
-
-
 
 
 
@@ -86,10 +67,7 @@ export class DwellTracker {
     const domain = this.extractDomain(url)
     
 
-
     console.log(`DNA: visited ${domain} 🌐`)
-
-
 
 
 
@@ -103,24 +81,17 @@ export class DwellTracker {
 
 
 
-
-
     this.tab_dna[domain].visits += 1
     this.tab_dna[domain].lastSeen = timestamp
 
-
     
-
 
     DNAStorage.saveTabDNA(this.tab_dna)
   }
 
 
 
-
-
   
-
 
 
   private extractDomain(url: string): string {
@@ -133,13 +104,9 @@ export class DwellTracker {
 
 
 
-
-
   getHabitMap(): DwellEvent[] {
     return this.habit_map
   }
-
-
 
 
 

@@ -1,3 +1,6 @@
+//edit: 3
+//the logic was kinda tough at first but read some docs and was able to figure it out
+
 
 /// <reference types="chrome"/>
 

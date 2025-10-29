@@ -3,11 +3,7 @@
 
 
 
-
-
-
 import React, {useEffect, useState } from 'react'
-
 
 
 
@@ -22,17 +18,18 @@ interface HabitSignal {
 
 
 
+
+
+
 interface HabitDisplayProps {
     habits?: HabitSignal[]
 }
 
 
 
-
 function HabitDisplay({habits}: HabitDisplayProps) {
 
-    const [currentTimeHabits, setCurrentTimeHabits] = useState<HabitSignal[]>([])
-
+    const [current_time_habits, setCurrentTimeHabits] = useState<HabitSignal[]>([])
 
 
 
@@ -40,49 +37,39 @@ function HabitDisplay({habits}: HabitDisplayProps) {
 
         if(!habits) return
 
-
         //get current time slot todetermine and display
 
-
         const hour = new Date().getHours()
-
-        let timeSlot: 'morning' | 'afternoon' | 'evening' | 'night'
-
-
-
+        let time_slot: 'morning' | 'afternoon' | 'evening' | 'night'
 
         if (hour >= 6 && hour < 12) {
-      timeSlot = 'morning'
+      time_slot = 'morning'
     } else if (hour >= 12 && hour < 18) {
-      timeSlot = 'afternoon'
+      time_slot = 'afternoon'
     } else if (hour >= 18 && hour < 22) {
-      timeSlot = 'evening'
+      time_slot = 'evening'
     } else {
-      timeSlot = 'night'
+      time_slot = 'night'
     }
-
 
 
 
     //fliter habits for time we determined here ^^^^
 
-    const filtered = habits.filter(h => h.timeOfDay === timeSlot)
+    const filtered = habits.filter(h => h.timeOfDay === time_slot)
     setCurrentTimeHabits(filtered.slice(0, 5))
     }, [habits])
 
 
 
 
-
-
-
     function getTimeIcon(timeOfDay: string): string {
         switch(timeOfDay) {
-            case 'morning': return '🌅'
-                 case 'afternoon': return '☀️'
-                     case 'evening': return '🌆'
-                         case 'night': return '🌙'
-                             default: return '⏰' 
+            case 'morning': return '☀️'
+            case 'afternoon': return '🌤️'
+            case 'evening': return '�'
+            case 'night': return '🌙'
+            default: return '⏰' 
         }
     }
 
@@ -113,16 +100,15 @@ function HabitDisplay({habits}: HabitDisplayProps) {
             <div className= "habit-header">
                 <span className = "label">routine tabs</span>
                 <span className = "time-label">
-                    {getTimeIcon(currentTimeHabits[0].timeOfDay)}
-                    {currentTimeHabits[0].timeOfDay}
+                    {getTimeIcon(current_time_habits[0].timeOfDay)}
+                    {current_time_habits[0].timeOfDay}
                 </span>
             </div>
 
 
 
-
 <div className="habit-list">
-        {currentTimeHabits.map((habit, idx) => (
+        {current_time_habits.map((habit, idx) => (
           <div key={habit.domain} className="habit-item">
             <div className="habit-info">
               <span className="habit-domain">{habit.domain}</span>
@@ -149,7 +135,7 @@ function HabitDisplay({habits}: HabitDisplayProps) {
 
 
 
-
 export default HabitDisplay
+
 
 

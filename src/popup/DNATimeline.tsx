@@ -1,5 +1,4 @@
-//dna timeline to show ur browsing energy thruout the day!
-
+//shows ur browsing pattern throughout the day its fun
 
 
 
@@ -11,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 
 
 interface TimelineDataPoint {
-  hour: number
+  hour: number   
   switches: number
   mode: 'FOCUS' | 'CHILL' | 'PANIC' | 'UNKNOWN'
   energy: number
@@ -42,14 +41,12 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
 
 
 
-
     // group data by hour
-    const hourlyData: Record<number, { count: number, mode: string }> = {}
+    const hourly_data: Record<number, { count: number, mode: string }> = {}
     
 
-
     for (let i = 0; i < 24; i++) {
-      hourlyData[i] = { count: 0, mode: 'UNKNOWN' }
+      hourly_data[i] = { count: 0, mode: 'UNKNOWN' }
     }
 
 
@@ -59,25 +56,23 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
     for (const pattern of visit_patterns) {
       const hour = pattern.hour
       if (hour >= 0 && hour < 24) {
-        hourlyData[hour].count++
+        hourly_data[hour].count++
       }
     }
 
 
 
-
     // calculate energy and mode for each hour
-    const timelineData: TimelineDataPoint[] = []
-    let maxSwitches = 0
-    let peakHr = 0
+    const timeline_data: TimelineDataPoint[] = []
+    let max_switches = 0
+    let peak_hr = 0
 
 
 
 
     for (let hour = 0; hour < 24; hour++) {
-      const switches = hourlyData[hour].count
+      const switches = hourly_data[hour].count
       
-
 
       // determine mode based on activity
       let mode: 'FOCUS' | 'CHILL' | 'PANIC' | 'UNKNOWN' = 'UNKNOWN'
@@ -86,15 +81,11 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
       else if (switches > 3) mode = 'FOCUS'
 
 
-
-
       // calculate energy level (0-100)
       const energy = Math.min(100, (switches / 20) * 100)
 
 
-
-
-      timelineData.push({
+      timeline_data.push({
         hour,
         switches,
         mode,
@@ -102,19 +93,15 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
       })
 
 
-
-
-      if (switches > maxSwitches) {
-        maxSwitches = switches
-        peakHr = hour
+      if (switches > max_switches) {
+        max_switches = switches
+        peak_hr = hour
       }
     }
 
 
-
-
-    setTimeline(timelineData)
-    setPeakHour(peakHr)
+    setTimeline(timeline_data)
+    setPeakHour(peak_hr)
 
 
 
@@ -155,7 +142,6 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
 
 
 
-
   if (!timeline || timeline.length === 0) {
     return (
       <div className="dna-timeline empty">
@@ -166,9 +152,7 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
   }
 
 
-
-
-  const maxEnergy = Math.max(...timeline.map(d => d.energy))
+  const max_energy = Math.max(...timeline.map(d => d.energy))
 
 
 
@@ -188,26 +172,25 @@ function DNATimeline({ habit_map, visit_patterns, totalSwitches }: DNATimelinePr
       <div className="timeline-graph">
         <div className="graph-grid">
           {timeline.map((point) => {
-            const isCurrentHour = point.hour === currentHour
-            const heightPercent = maxEnergy > 0 ? (point.energy / maxEnergy) * 100 : 0
+            const is_current = point.hour === currentHour
+            const height_pct = max_energy > 0 ? (point.energy / max_energy) * 100 : 0
             
-
 
             return (
               <div 
                 key={point.hour} 
-                className={`graph-bar ${isCurrentHour ? 'current' : ''}`}
+                className={`graph-bar ${is_current ? 'current' : ''}`}
                 title={`${formatHour(point.hour)}: ${point.switches} switches (${point.mode})`}
               >
                 <div 
                   className="bar-fill"
                   style={{
-                    height: `${heightPercent}%`,
+                    height: `${height_pct}%`,
                     background: getModeColor(point.mode),
                     boxShadow: `0 0 8px ${getModeColor(point.mode)}44`
                   }}
                 />
-                {isCurrentHour && (
+                {is_current && (
                   <div className="current-marker">●</div>
                 )}
                 {point.hour % 3 === 0 && (

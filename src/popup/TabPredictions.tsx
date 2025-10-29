@@ -1,5 +1,5 @@
-//ssss predicts ur next tab based on habits and patterns
-
+// predicts ur next tab based on habits and patterns
+// lmao this is kinda wild
 
 
 
@@ -58,12 +58,11 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
     const preds: Prediction[] = []
     const now = new Date()
     const currentHour = now.getHours()
-    const currentDay = now.getDay() 
+    const currentDay = now.getDay()
 
 
 
-
-    // timebased predictions from habits
+    // time based predictions from habits
     if (habits && habits.length > 0) {
       const timeSlot = getTimeSlot(currentHour)
       const relevantHabits = habits.filter(h => h.timeOfDay === timeSlot && h.confidence > 40)
@@ -84,16 +83,15 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
 
 
 
-    // mode-based predictions
+    // mode based predictions
     if (modeGuess) {
-      const modePreds = getModeBasedPredictions(modeGuess)
-      preds.push(...modePreds)
+      const mode_preds = getModeBasedPredictions(modeGuess)
+      preds.push(...mode_preds)
     }
 
 
 
-
-    // pattern-based predictions (what u visited recently)
+    // pattern based predictions (what u visited recently)
     if (visit_patterns && visit_patterns.length > 0) {
       const recentPatterns = visit_patterns.slice(-10)
       const domainFreq: Record<string, number> = {}
@@ -130,11 +128,11 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
 
 
 
-    // day-based predictions (weekend vs weekday)
-    const isWeekend = currentDay === 0 || currentDay === 6
-    if (isWeekend) {
-      const weekendSites = ['youtube.com', 'netflix.com', 'reddit.com', 'twitter.com']
-      for (const site of weekendSites) {
+    // day based predictions (weekend vs weekday)
+    const is_weekend = currentDay === 0 || currentDay === 6
+    if (is_weekend) {
+      const weekend_sites = ['youtube.com', 'netflix.com', 'reddit.com', 'twitter.com']
+      for (const site of weekend_sites) {
         if (tab_dna && tab_dna[site] && !preds.find(p => p.domain === site)) {
           preds.push({
             domain: site,
@@ -146,8 +144,8 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
         }
       }
     } else {
-      const weekdaySites = ['github.com', 'stackoverflow.com', 'docs.google.com', 'mail.google.com']
-      for (const site of weekdaySites) {
+      const weekday_sites = ['github.com', 'stackoverflow.com', 'docs.google.com', 'mail.google.com']
+      for (const site of weekday_sites) {
         if (tab_dna && tab_dna[site] && !preds.find(p => p.domain === site)) {
           preds.push({
             domain: site,
@@ -163,7 +161,7 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
 
 
 
-    // late night predictions
+    // late nite predictions
     if (currentHour >= 22 || currentHour < 4) {
       if (tab_dna && tab_dna['youtube.com'] && !preds.find(p => p.domain === 'youtube.com')) {
         preds.push({
@@ -174,8 +172,6 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
         })
       }
     }
-
-
 
 
     // sort by confidence
@@ -195,12 +191,11 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
 
 
 
-
     switch (mode) {
       case 'FOCUS':
         if (tab_dna) {
-          const focusSites = ['github.com', 'stackoverflow.com', 'docs.google.com']
-          for (const site of focusSites) {
+          const focus_sites = ['github.com', 'stackoverflow.com', 'docs.google.com']
+          for (const site of focus_sites) {
             if (tab_dna[site] && !predictions.find(p => p.domain === site)) {
               preds.push({
                 domain: site,
@@ -231,8 +226,8 @@ function TabPredictions({ habits, tab_dna, modeGuess, visit_patterns }: TabPredi
 
       case 'CHILL':
         if (tab_dna) {
-          const chillSites = ['youtube.com', 'reddit.com', 'twitter.com']
-          for (const site of chillSites) {
+          const chill_sites = ['youtube.com', 'reddit.com', 'twitter.com']
+          for (const site of chill_sites) {
             if (tab_dna[site] && !predictions.find(p => p.domain === site)) {
               preds.push({
                 domain: site,

@@ -154,4 +154,4 @@ window.addEventListener('scroll', () => {
 
 
 
-console.log('🧬 Tab DNA scroll tracker active')
+console.log(' Tab DNA scroll tracker active')

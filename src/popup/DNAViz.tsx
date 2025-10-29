@@ -6,8 +6,6 @@ import React, { useEffect, useState} from 'react'
 
 
 
-
-
 interface DomainData {
 
     visits: number
@@ -20,9 +18,11 @@ interface DomainData {
 
 interface TabDNA {
 
-
     [domain: string]: DomainData
 }
+
+
+
 
 
 
@@ -31,18 +31,17 @@ interface DNAVizProps {
     tab_dna?: TabDNA
     modeGuess?: string
 
-
-
 }
+
+
+
 
 
 
 function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
 
 
-    const[dominantDomains, setDominantDomains] = useState<Array<{domain: string, visits: number, color: string}>>([])
-
-
+    const[dominant_domains, setDominantDomains] = useState<Array<{domain: string, visits: number, color: string}>>([])
 
 
 
@@ -60,7 +59,6 @@ function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
 
                     .map(([domain, data]) => ({
 
-
                         domain,
                         visits: data.visits,
                         color: getDNAColor(data.visits, data.totalDwellTime || 0)
@@ -74,12 +72,9 @@ function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
 
 
 
-
                     setDominantDomains(domains)
 
     }, [tab_dna])
-
-
 
 
 
@@ -90,19 +85,15 @@ function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
     function getDNAColor(visits: number, dwellTime: number): string {
 
 
-
         const hue = Math.max(0, 280 - (visits * 15))
 
         //purple to red, i like those, idk if people like green as much as me so 
-
 
         const saturation = Math.min(100, 60 + (dwellTime/100))
 
         const lightness=55
 
          return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-
-
 
     }
 
@@ -119,16 +110,12 @@ function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
             case 'CHILL': return '#00d4ff'
             default: return '#666'
 
-
-
         }
     }
 
 
-
    if (!tab_dna || Object.keys(tab_dna).length === 0) {
     return (
-
 
       <div className="dna-viz empty">
         <p>// no DNA data yet</p>
@@ -141,72 +128,46 @@ function DNAViz({ tab_dna, modeGuess }: DNAVizProps) {
 
 
 
-
-
-
-
-
-
-
   return (
-
-
-
 
     <div className = "dna-viz">
 
         <div className="dna-header">
-
-
             <span className = "mode-badge" style={{ borderColor: getModeColor(), color: getModeColor()}}>
                 {modeGuess || 'unknown'}  
-                 
             </span>
         </div>
 
+        <div className="dna-strands">
+            {dominant_domains.map((d, idx) => (
+                <div key={d.domain} className="dna-strand">
+                    <div 
+                        className="strand-bar" 
+                        style={{ 
+                            width: `${Math.min(100, (d.visits / dominant_domains[0].visits) * 100)}%`,
+                            background: d.color,
+                            animationDelay: `${idx * 0.1}s`
+                        }}
+                    />
+                    <div className="strand-label">
+                        <span className="domain-name">{d.domain}</span>
+                        <span className="visit-count">{d.visits}x</span>
+                    </div>
+                </div>
+            ))}
+        </div>
 
+        {/* dna helix decoration part, wont be putting no*/ }
 
-
-            <div className="dna-strands">
-        {dominantDomains.map((d, idx) => (
-          <div key={d.domain} className="dna-strand">
-            <div 
-              className="strand-bar" 
-              style={{ 
-                width: `${Math.min(100, (d.visits / dominantDomains[0].visits) * 100)}%`,
-                background: d.color,
-                animationDelay: `${idx * 0.1}s`
-              }}
-            />
-            <div className="strand-label">
-              <span className="domain-name">{d.domain}</span>
-              <span className="visit-count">{d.visits}x</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-
-
-
-
-
-      {/* dna helix decoration part, wont be putting no*/ }
-
-
-      <div className ="helix-decoration">
+        <div className ="helix-decoration">
             <div className ="helix-strand"></div>
             <div className ="helix-strand"></div>
-            </div>
-            </div>
-
-
+        </div>
+    </div>
 
   )
 
-
 }
-
 
 
 

@@ -1,13 +1,8 @@
-/*
-  STATS PANEL
-  shows user their browsing stats — total switches, avg dwell, top domains
-  basically a numbers dashboard but make it look like hacker terminal vibes
-*/
+//shows browsing ststs, making the extenion render blank someehow
 
 
 
 import React, { useEffect, useState } from 'react'
-
 
 
 
@@ -16,6 +11,9 @@ interface StatsPanelProps {
   habit_map?: any[]
   totalSwitches?: number
 }
+
+
+
 
 
 
@@ -31,16 +29,12 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
 
-
   useEffect(() => {
     if (!tab_dna && !habit_map) return
-
 
     // compute stats from data
     computeStats()
   }, [tab_dna, habit_map])
-
-
 
 
   
@@ -48,51 +42,44 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
   function computeStats(): void {
-    let avgDwell = 0
-    let topDomain = '—'
-    let uniqueDomains = 0
-    let totalDwellTime = 0
+    let avg_dwell = 0
+    let top_domain = '—'
+    let unique_domains = 0
+    let total_dwell_time = 0
 
 
 
 
     // from habit_map (dwell events)
     if (habit_map && habit_map.length > 0) {
-      const totalDuration = habit_map.reduce((sum: number, event: any) => sum + (event.duration || 0), 0)
-      avgDwell = Math.round(totalDuration / habit_map.length)
-      totalDwellTime = totalDuration
+      const total_duration = habit_map.reduce((sum: number, event: any) => sum + (event.duration || 0), 0)
+      avg_dwell = Math.round(total_duration / habit_map.length)
+      total_dwell_time = total_duration
     }
-
 
 
 
     // from tab_dna (domain visits)
     if (tab_dna) {
       const domains = Object.keys(tab_dna)
-      uniqueDomains = domains.length
-
+      unique_domains = domains.length
 
       
 
-
       if (domains.length > 0) {
         const sorted = domains.sort((a, b) => tab_dna[b].visits - tab_dna[a].visits)
-        topDomain = sorted[0]
+        top_domain = sorted[0]
       }
     }
 
 
-
-
     setStats({
-      avgDwell,
-      topDomain,
-      uniqueDomains,
-      totalDwellTime
+      avgDwell: avg_dwell,
+      topDomain: top_domain,
+      uniqueDomains: unique_domains,
+      totalDwellTime: total_dwell_time
     })
   }
-
-
 
 
   
@@ -103,22 +90,17 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
     if (seconds < 60) return `${seconds}s`
     
 
-
     const mins = Math.floor(seconds / 60)
     if (mins < 60) return `${mins}m`
     
 
-
     const hours = Math.floor(mins / 60)
-    const remainMins = mins % 60
-    return `${hours}h ${remainMins}m`
+    const remain_mins = mins % 60
+    return `${hours}h ${remain_mins}m`
   }
 
 
-
-
   
-
 
 
   function formatDomain(domain: string): string {
@@ -131,13 +113,11 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
 
-
   return (
     <div className="stats-panel">
       <div className="stats-header">
         <span className="label">📊 stats</span>
       </div>
-
 
 
 
@@ -149,12 +129,10 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
 
-
         <div className="stat-item">
           <div className="stat-value">{formatTime(stats.avgDwell)}</div>
           <div className="stat-label">avg dwell</div>
         </div>
-
 
 
 
@@ -165,13 +143,11 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
 
-
         <div className="stat-item highlight">
           <div className="stat-value">{formatDomain(stats.topDomain)}</div>
           <div className="stat-label">top domain</div>
         </div>
       </div>
-
 
 
 
@@ -186,8 +162,9 @@ function StatsPanel({ tab_dna, habit_map, totalSwitches }: StatsPanelProps) {
 
 
 
-
 export default StatsPanel
+
+
 
 
 
